@@ -1,0 +1,1 @@
+Entity Framework is an ORM (Objet Relational Mapper)
