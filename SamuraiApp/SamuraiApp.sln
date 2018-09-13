@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SamuraiApp.Domain", "Samura
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SamuraiApp.Data", "SamuraiApp.Data\SamuraiApp.Data.csproj", "{F4597C42-DA4B-49C3-9F9D-4FD2997B5326}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{ACA30128-5AA1-4E59-967E-E78BF5963B0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SamuraiApp.UI", "SamuraiApp.UI\SamuraiApp.UI.csproj", "{2A41330A-D169-48C3-B3DC-E0FBC7C796A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{F4597C42-DA4B-49C3-9F9D-4FD2997B5326}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4597C42-DA4B-49C3-9F9D-4FD2997B5326}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4597C42-DA4B-49C3-9F9D-4FD2997B5326}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACA30128-5AA1-4E59-967E-E78BF5963B0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACA30128-5AA1-4E59-967E-E78BF5963B0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACA30128-5AA1-4E59-967E-E78BF5963B0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACA30128-5AA1-4E59-967E-E78BF5963B0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A41330A-D169-48C3-B3DC-E0FBC7C796A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A41330A-D169-48C3-B3DC-E0FBC7C796A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A41330A-D169-48C3-B3DC-E0FBC7C796A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A41330A-D169-48C3-B3DC-E0FBC7C796A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
