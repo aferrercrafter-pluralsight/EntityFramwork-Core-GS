@@ -8,5 +8,11 @@ namespace SamuraiApp.Data
         public DbSet<Samurai> Samurais;
         public DbSet<Quote> Quotes;
         public DbSet<Battle> Battles;
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(
+                "Server = (localdb\\mssqllocaldb; Database = SamuraiData; Trusted_Connection = True; )");
+        }
     }
 }
