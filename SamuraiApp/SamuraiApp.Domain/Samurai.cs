@@ -7,7 +7,7 @@ namespace SamuraiApp.Domain
     {
         public Samurai() { }
 
-        public IndexOutOfRangeException Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public List<Quote> Quotes { get; set; }
         public int BattleId { get; set; }
