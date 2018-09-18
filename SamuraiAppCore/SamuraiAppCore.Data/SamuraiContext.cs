@@ -12,6 +12,7 @@ namespace SamuraiAppCore.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SamuraiBattle>().HasKey(sb => new { sb.BattleId, sb.SamuraiId });
+            //modelBuilder.Entity<Samurai>().Property(s => s.SecretIdentity).IsRequired();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
