@@ -9,6 +9,11 @@ namespace SamuraiAppCore.Data
         public DbSet<Samurai> Samurais { get; set; }        
         public DbSet<Quote> Quotes { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<SamuraiBattle>().HasKey(sb => new { sb.BattleId, sb.SamuraiId });
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
