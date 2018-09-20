@@ -18,9 +18,10 @@ namespace SamuraiApp.Data
 
         protected override void OnConfiguring (DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
-                "Data Source = (localdb)\\MSSQLLocalDB; Database = SamuraiDataCore; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = True; ApplicationIntent = ReadWrite; MultiSubnetFailover = False"
-                );
+            string connection = "Data Source = (localdb)\\MSSQLLocalDB; Database = SamuraiDataCore; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = True; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
+            optionsBuilder.UseSqlServer(connection);
+            optionsBuilder.EnableSensitiveDataLogging();
+            
         }
 
     }

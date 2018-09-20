@@ -130,6 +130,7 @@
       <DependentUpon>20180919195900_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\SamuraiContextModelSnapshot.cs" />
+    <Compile Include="MyLoggerProvider.cs" />
     <Compile Include="SamuraiContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
