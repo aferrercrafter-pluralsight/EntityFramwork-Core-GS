@@ -59,13 +59,9 @@ namespace SamuraiAppCore.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BattleId");
-
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BattleId");
 
                     b.ToTable("Samurais");
                 });
@@ -109,23 +105,15 @@ namespace SamuraiAppCore.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SamuraiAppCore.Domain.Samurai", b =>
-                {
-                    b.HasOne("SamuraiAppCore.Domain.Battle")
-                        .WithMany("Samurais")
-                        .HasForeignKey("BattleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("SamuraiAppCore.Domain.SamuraiBattle", b =>
                 {
                     b.HasOne("SamuraiAppCore.Domain.Battle", "Battle")
-                        .WithMany()
+                        .WithMany("SamuraisBattles")
                         .HasForeignKey("BattleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SamuraiAppCore.Domain.Samurai", "Samurai")
-                        .WithMany()
+                        .WithMany("SamuraiBattles")
                         .HasForeignKey("SamuraiId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
