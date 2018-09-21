@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace SamuraiApp.UI
 {
@@ -11,7 +12,7 @@ namespace SamuraiApp.UI
     {
         static void Main(string[] args)
         {
-            InsertMultipleSamurais();
+            SimpleSamurayQuery();
             Console.ReadLine();
         }
 
@@ -26,7 +27,6 @@ namespace SamuraiApp.UI
                 context.SaveChanges();
             }
         }
-
         private static void InsertMultipleSamurais()
         {
             var samurai = new Samurai { Name = "Brook" };
@@ -40,6 +40,26 @@ namespace SamuraiApp.UI
                 //context.AddRange(samurai, samurai2);
                 context.Samurais.AddRange(new List<Samurai>() { samurai, samurai2, samurai3, samurai4 });                
                 context.SaveChanges();
+            }
+        }
+        private static void SimpleSamurayQuery()
+        {
+            using (var context = new SamuraiContext())
+            {
+                var samurais = context.Samurais.ToList();
+
+                var query = context.Samurais;
+                //var samurais = query.ToList()
+
+                foreach (var samurai in query)
+                {
+                    Console.WriteLine(samurai.Name);
+                }
+                //foreach (var samurai in context.Samurais)
+                //{
+                    //Console.WriteLine(samurai.Name);
+                //}
+
             }
         }
 
