@@ -60,3 +60,31 @@ __Lots of work each result__. Connections stays open until last recrod is fetche
 `}`
 __smarter__ to get results first
 
+### Harcoding values ###
+
+`_context.Samurais.FirstOrDefault(s => s.Name == "Soro");`
+If you harcode the values directly into the quey then EF concludes that that value rnadomly comes from data entry so it safe, so it harcodes the value into the sql
+
+`var name = "Soro";`
+`_context.Samurais.FirstOrDefault(s => s.Name == name);`
+EF parameterize the query to sql
+
+### What happens when there aren´t any ###
+
+`First()`
+`Single()`
+`Last()`
+
+__system.InvalidOperationException: Sequence contains no element__
+
+`FirstOrFefault()`
+`SingleOrFefault()`
+`LastOrFefault()`
+
+__Returns null__
+
+### Find vs FirstOrDefault ###
+
+__FirstOrDefault__ method makes a reuest no matter what to the DB
+__Find__ DbSet method first checks if the context is already tracking that object, and if it is, it return the object inmedietly, without making a request to the Db. If not, use a `FirstOrDefoult()`
+

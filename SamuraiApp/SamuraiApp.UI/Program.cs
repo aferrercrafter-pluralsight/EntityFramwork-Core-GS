@@ -10,22 +10,23 @@ namespace SamuraiApp.UI
 {
     class Program
     {
+        private static SamuraiContext _context = new SamuraiContext();
+
         static void Main(string[] args)
         {
-            SimpleSamurayQuery();
+            _context.GetService<ILoggerFactory>().AddProvider(new MyLoggerProvider());
+            MoreQueries();
             Console.ReadLine();
         }
 
         private static void InsertSamurai()
         {
             var samurai = new Samurai { Name = "Julie" };
-            using (var context = new SamuraiContext())
-            {
-                context.GetService<ILoggerFactory>().AddProvider(new MyLoggerProvider());
-                context.Samurais.Add(samurai);
-                //contexxt.Add(samurai);
-                context.SaveChanges();
-            }
+
+            _context.GetService<ILoggerFactory>().AddProvider(new MyLoggerProvider());
+            _context.Samurais.Add(samurai);
+            //_contexxt.Add(samurai);
+            _context.SaveChanges();
         }
         private static void InsertMultipleSamurais()
         {
@@ -33,34 +34,31 @@ namespace SamuraiApp.UI
             var samurai2 = new Samurai { Name = "Zoro" };
             var samurai3 = new Samurai { Name = "Pica" };
             var samurai4 = new Samurai { Name = "Gintama" };
-
-            using (var context = new SamuraiContext())
-            {
-                context.GetService<ILoggerFactory>().AddProvider(new MyLoggerProvider());
-                //context.AddRange(samurai, samurai2);
-                context.Samurais.AddRange(new List<Samurai>() { samurai, samurai2, samurai3, samurai4 });                
-                context.SaveChanges();
-            }
+            
+            //_context.AddRange(samurai, samurai2);
+            _context.Samurais.AddRange(new List<Samurai>() { samurai, samurai2, samurai3, samurai4 });
+            _context.SaveChanges();
         }
         private static void SimpleSamurayQuery()
         {
-            using (var context = new SamuraiContext())
+            var samurais = _context.Samurais.ToList();
+
+            var query = _context.Samurais;
+            //var samurais = query.ToList()
+
+            foreach (var samurai in query)
             {
-                var samurais = context.Samurais.ToList();
-
-                var query = context.Samurais;
-                //var samurais = query.ToList()
-
-                foreach (var samurai in query)
-                {
-                    Console.WriteLine(samurai.Name);
-                }
-                //foreach (var samurai in context.Samurais)
-                //{
-                    //Console.WriteLine(samurai.Name);
-                //}
-
+                Console.WriteLine(samurai.Name);
             }
+            //foreach (var samurai in _context.Samurais)
+            //{
+            //Console.WriteLine(samurai.Name);
+            //}
+        }
+        private static void MoreQueries()
+        {
+            var name = "Soro";
+            _context.Samurais.FirstOrDefault(s => s.Name == name);
         }
 
     }
