@@ -88,3 +88,6 @@ __Returns null__
 __FirstOrDefault__ method makes a reuest no matter what to the DB
 __Find__ DbSet method first checks if the context is already tracking that object, and if it is, it return the object inmedietly, without making a request to the Db. If not, use a `FirstOrDefoult()`
 
+### Batch Operations ###
+
+Batch operations are limitted to common operations. You can have bunch of activities that the context its tracking update, insert and deletes. When the context save changes will batch them all.

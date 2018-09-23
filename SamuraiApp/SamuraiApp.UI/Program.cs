@@ -15,7 +15,7 @@ namespace SamuraiApp.UI
         static void Main(string[] args)
         {
             _context.GetService<ILoggerFactory>().AddProvider(new MyLoggerProvider());
-            MoreQueries();
+            RetrieveAndUpdateMultipleSamurais();
             Console.ReadLine();
         }
 
@@ -59,6 +59,12 @@ namespace SamuraiApp.UI
         {
             var name = "Soro";
             _context.Samurais.FirstOrDefault(s => s.Name == name);
+        }
+        private static void RetrieveAndUpdateMultipleSamurais()
+        {
+            var samurais = _context.Samurais.ToList();
+            samurais.ForEach(s => s.Name += " San");
+            _context.SaveChanges();
         }
 
     }
