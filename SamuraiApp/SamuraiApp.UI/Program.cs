@@ -15,7 +15,7 @@ namespace SamuraiApp.UI
         static void Main(string[] args)
         {
             _context.GetService<ILoggerFactory>().AddProvider(new MyLoggerProvider());
-            RetrieveAndUpdateMultipleSamurais();
+            QueryAndUpdateDisconnectedBattle();
             Console.ReadLine();
         }
 
@@ -65,6 +65,28 @@ namespace SamuraiApp.UI
             var samurais = _context.Samurais.ToList();
             samurais.ForEach(s => s.Name += " San");
             _context.SaveChanges();
+        }
+
+        private static void InsertBattle()
+        {
+            var battle = new Battle
+            {
+                Name = "Mount Fuji",
+                StartDate = DateTime.Now.AddYears(-100),
+                EndDate = DateTime.Now.AddYears(-80)
+            };
+            _context.Battles.Add(battle);
+            _context.SaveChanges();
+        }
+        private static void QueryAndUpdateDisconnectedBattle()
+        {
+            var battle = _context.Battles.FirstOrDefault();
+            battle.Name += " battle";
+            using (var contextNewAppInstance = new SamuraiContext())
+            {
+                contextNewAppInstance.Battles.Update(battle);
+                contextNewAppInstance.SaveChanges();
+            }
         }
 
     }
