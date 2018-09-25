@@ -16,7 +16,7 @@ namespace SamuraiApp.UI
         static void Main(string[] args)
         {
             _context.GetService<ILoggerFactory>().AddProvider(new MyLoggerProvider());
-            RawSqlQuery();
+            QueryWithNonSql();
             Console.ReadLine();
         }
 
@@ -128,7 +128,25 @@ namespace SamuraiApp.UI
             var samurais = _context.Samurais.FromSql("SELECT * FROM Samurais").OrderByDescending(s => s.Name).Where(s=>s.Name.Contains("San")).ToList();
             samurais.ForEach(s => Console.WriteLine(s.Name));
         }
+        private static void RawSqlSpCall()
+        {
+            var namepart = "san";
+            var samurais = _context.Samurais.FromSql("EXEC FilterSamuraiByNamepart {0}", namepart).OrderByDescending(s=>s.Name).ToList();
+            samurais.ForEach(s => Console.WriteLine(s.Name));
+
+        }
+        private static void QueryWithNonSql()
+        {
+            var samurais = _context.Samurais.Select(s => new { Name = ReverseString(s.Name) }).ToList();
+            samurais.ForEach(s => Console.WriteLine(s.Name));
+        }
         #endregion
+
+        private static string ReverseString(string value)
+        {
+            var stringChar = value.AsEnumerable();
+            return string.Concat(stringChar.Reverse());
+        }
 
 
 
