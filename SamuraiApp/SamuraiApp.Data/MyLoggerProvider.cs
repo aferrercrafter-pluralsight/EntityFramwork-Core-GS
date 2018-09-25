@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 
 namespace SamuraiApp.Data
@@ -24,7 +25,10 @@ namespace SamuraiApp.Data
 
             public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
             {
-                Console.WriteLine(formatter(state, exception));
+                if(eventId == RelationalEventId.CommandExecuted.Id)
+                {
+                    Console.WriteLine(formatter(state, exception));
+                }                
             }
         }
 
