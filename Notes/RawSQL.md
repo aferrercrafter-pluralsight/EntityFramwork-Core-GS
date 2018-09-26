@@ -17,3 +17,12 @@ _Replaces DbSet.SqlQuery, DbContext.Database.SqlQuery_
 * Result set column names = mapped names
 * Query must be flat ...no related data
 * Not yet: store procedure mappings
+
+__Command__
+`DbContext.Database.Command()`
+_Same as earlier EF versions_
+
+* Returns int (row affected)
+* Can use output parameters
+* ExecuteSqlCommandAsync available
+* Does not start a transaction  ala SaveChanges()
