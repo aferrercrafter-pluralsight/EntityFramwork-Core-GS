@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Data.SqlClient;
 
 namespace SamuraiApp.UI
 {
@@ -16,7 +17,7 @@ namespace SamuraiApp.UI
         static void Main(string[] args)
         {
             _context.GetService<ILoggerFactory>().AddProvider(new MyLoggerProvider());
-            QueryWithNonSql();
+            RawSqlCommandWithOutput();
             Console.ReadLine();
         }
 
@@ -125,7 +126,8 @@ namespace SamuraiApp.UI
         #region Raw Sql
         private static void RawSqlQuery()
         {
-            var samurais = _context.Samurais.FromSql("SELECT * FROM Samurais").OrderByDescending(s => s.Name).Where(s=>s.Name.Contains("San")).ToList();
+            //var samurais = _context.Samurais.FromSql("SELECT * FROM Samurais").OrderByDescending(s => s.Name).Where(s=>s.Name.Contains("San")).ToList();
+            var samurais = _context.Samurais.FromSql("SELECT * FROM Samurais").OrderByDescending(s => s.Name).ToList();
             samurais.ForEach(s => Console.WriteLine(s.Name));
         }
         private static void RawSqlSpCall()
@@ -139,6 +141,26 @@ namespace SamuraiApp.UI
         {
             var samurais = _context.Samurais.Select(s => new { Name = ReverseString(s.Name) }).ToList();
             samurais.ForEach(s => Console.WriteLine(s.Name));
+        }
+        private static void RawSqlCommand()
+        {
+            var affected = _context.Database.ExecuteSqlCommand(
+                "UPDATE Samurais SET Name = REPLACE(Name,'San','Nan')");
+            Console.WriteLine("Rows affecred {0}", affected);
+
+        }
+        private static void RawSqlCommandWithOutput()
+        {
+            var procResult = new SqlParameter()
+            {
+                ParameterName = @"procResult",
+                SqlDbType = System.Data.SqlDbType.VarChar,
+                Direction = System.Data.ParameterDirection.Output,
+                Size = 50
+            };
+
+            _context.Database.ExecuteSqlCommand("EXEC FindLongestName @procResult OUT", procResult);
+            Console.WriteLine($"Longest Name: {procResult.Value}");
         }
         #endregion
 
