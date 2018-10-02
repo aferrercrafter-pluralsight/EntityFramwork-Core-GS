@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SamuraiApp.Domain;
+using System.Linq;
 
 namespace SamuraiApp.Data
 {
@@ -20,8 +21,7 @@ namespace SamuraiApp.Data
         {
             string connection = "Data Source = (localdb)\\MSSQLLocalDB; Database = SamuraiRelatedData; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = True; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
             optionsBuilder.UseSqlServer(connection);
-            optionsBuilder.EnableSensitiveDataLogging();
-            
+            optionsBuilder.EnableSensitiveDataLogging();            
         }
 
     }
