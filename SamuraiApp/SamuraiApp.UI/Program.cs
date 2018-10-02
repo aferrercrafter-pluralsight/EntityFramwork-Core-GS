@@ -18,10 +18,11 @@ namespace SamuraiApp.UI
         {
             _context.Database.EnsureCreated();
             _context.GetService<ILoggerFactory>().AddProvider(new MyLoggerProvider());
-            AddManyToManyWithObject();
+            EagerLoadWithFromSql();
             Console.ReadLine();
         }
 
+        #region RelatedData
         private static void InsertNewPkFkGraph()
         {
             var samurai = new Samurai
@@ -85,6 +86,37 @@ namespace SamuraiApp.UI
                 );
             _context.SaveChanges();
         }
+        #endregion
 
+        #region 
+        private static void EagerLoadWithInclude()
+        {
+            using (var context = new SamuraiContext())
+            {
+                var samuraiWithQuotes = context.Samurais.Include(s => s.Quotes).ToList();
+            }
+        }
+        private static void EagerLoadManyToManyAkaChildrenGrandChildren()
+        {
+            using (var context = new SamuraiContext())
+            {
+                var samuraiWithBattles = context.Samurais.Include(s => s.SamuraiBattles).ThenInclude(sb => sb.Battle).ToList();
+            }
+        }
+        private static void EagerLoadingWithMultipleBranches()
+        {
+            using (var context = new SamuraiContext())
+            {
+                var samuraiWithQuotesAndSecretIdentity = context.Samurais.Include(s => s.Quotes).Include(s => s.SecretIdentity).ToList();
+            }
+        }
+        private static void EagerLoadWithFromSql()
+        {
+            using (var context = new SamuraiContext())
+            {
+                var samuraisWithQuotes = context.Samurais.FromSql("SELECT * FROM Samurais").Include(s => s.Quotes).ToList();
+            }
+        }
+        #endregion
     }
 }
