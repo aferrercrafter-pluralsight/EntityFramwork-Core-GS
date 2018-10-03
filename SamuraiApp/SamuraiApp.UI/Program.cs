@@ -18,7 +18,7 @@ namespace SamuraiApp.UI
         {
             _context.Database.EnsureCreated();
             _context.GetService<ILoggerFactory>().AddProvider(new MyLoggerProvider());
-            EagerLoadWithFromSql();
+            FilteredEagerLoadViaProjectionNope();
             Console.ReadLine();
         }
 
@@ -88,7 +88,7 @@ namespace SamuraiApp.UI
         }
         #endregion
 
-        #region 
+        #region  EagerLoadInclude
         private static void EagerLoadWithInclude()
         {
             using (var context = new SamuraiContext())
@@ -115,6 +115,61 @@ namespace SamuraiApp.UI
             using (var context = new SamuraiContext())
             {
                 var samuraisWithQuotes = context.Samurais.FromSql("SELECT * FROM Samurais").Include(s => s.Quotes).ToList();
+            }
+        }
+        #endregion
+
+        #region EagerLoadProjection
+        private static void AnonymousTypeViaProjection()
+        {
+            using (var context = new SamuraiContext())
+            {
+                var quotes = context.Quotes
+                    .Select(q => new { q.Id, q.Text })
+                    .ToList();
+            }
+        }
+        private static void AnonymousTypeViaProjectionWithrelated()
+        {
+            using (var context = new SamuraiContext())
+            {
+                var samurais = context.Samurais
+                    .Select(s => new {
+                        s.Id,
+                        s.SecretIdentity.RealName,
+                        QuoteCount = s.Quotes.Count
+                    })
+                    .ToList();
+            }
+        }
+        private static void RelatedObjectsFixUp()
+        {
+            using (var context = new SamuraiContext())
+            {
+                var samurai = context.Samurais.Find(1);
+                var quotes = context.Quotes.Where(q => q.SamuraiId == 1).ToList();
+            }
+        }
+        private static void EagerLoadViaProjectionNotQuite()
+        {
+            using (var context = new SamuraiContext())
+            {
+                var samurais = context.Samurais.Select(s => new {
+                    Samurai = s,
+                    Quotes = s.Quotes
+                })
+                .ToList();
+            }                
+        }
+        private static void FilteredEagerLoadViaProjectionNope()
+        {
+            using (var context = new SamuraiContext())
+            {
+                var samurais = context.Samurais.Select(s => new {
+                    Samurai = s,
+                    Quotes = s.Quotes.Where(q => q.Text.Contains("nope")).ToList()
+                })
+                .ToList();
             }
         }
         #endregion

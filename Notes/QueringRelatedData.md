@@ -1,10 +1,11 @@
 ### Loading Related Data ###
 
-
 * Eager via Include() EF -> EF6 / EF Core
 * Eager via Projection EF -> EF6 / Not Quite
 * Explicit Load EF -> EF6 / EF Core
 * Lazy Loading EF -> EF6 / EF Core
+
+### Eager Load using Include ###
 
 ```c#
 private static void EagerLoadWithInclude()
@@ -67,4 +68,95 @@ private static void EagerLoadWithFromSql()
 ```
 
 The FromSql query is executed first, then another command for the inlcude is executed.
+
+### Eager Load using Projection ###
+
+Anonymous type is a new object "on te fly" type, returned via projection.
+
+```c#
+private static void AnonymousTypeViaProjection()
+        {
+            using (var context = new SamuraiContext())
+            {
+                var quotes = context.Quotes
+                    .Select(q => new { q.Id, q.Text })
+                    .ToList();
+            }
+        }
+```
+
+__Single Type__
+SQL -> Simple
+Results -> As expected
+
+```c#
+private static void AnonymousTypeViaProjectionWithrelated()
+{
+    using (var context = new SamuraiContext())
+    {
+        var samurais = context.Samurais
+            .Select(s => new {
+                s.Id,
+                s.SecretIdentity.RealName,
+                QuoteCount = s.Quotes.Count
+                })
+            .ToList();
+    }
+}
+```
+
+__Scalar values across relationships__
+SQL -> N+1 (seems fixted Core 2.1 version)
+Results -> As expected
+
+```c#
+private static void RelatedObjectsFixUp()
+{
+    using (var context = new SamuraiContext())
+    {
+        var samurai = context.Samurais.Find(1);
+        var quotes = context.Quotes.Where(q => q.SamuraiId == 1).ToList();
+    }
+}
+```
+When the samurai is retrived, it does not have the related quotes, but when quotes are retrieved,the changetracker did something called _fixingup the navigations_. It fix the samurai related data now tracked.
+
+```c#
+private static void EagerLoadViaProjectionNotQuite()
+{
+    using (var context = new SamuraiContext())
+    {
+        var samurais = context.Samurais.Select(s => new { Samurai = s, Quotes = s.Quotes }).ToList();
+    }                
+}
+```
+
+__Full related objects__
+SQL -> N+1 (seems fixted Core 2.1 version)
+Results -> Not Tracked (fixed)
+
+All results are in memory, but navigations are not fixed up
+known bug https://github.com/aspnet/EntityFrameworkCore/issues/7131
+Issue fixed!
+
+```c#
+private static void FilteredEagerLoadViaProjectionNope()
+{
+    using (var context = new SamuraiContext())
+    {
+        var samurais = context.Samurais.Select(s => new {
+            Samurai = s,
+            Quotes = s.Quotes.Where(q => q.Text.Contains("nope")).ToList()
+        })
+        .ToList();
+    }
+}
+```
+
+Quotes are not even retrieved in query if not ToList or Linq Exec method is called
+
+__Full related objects, filtered__
+SQL -> Requires ToList or other Linq exec method
+Results -> Not tracked (not fixed)
+
 
