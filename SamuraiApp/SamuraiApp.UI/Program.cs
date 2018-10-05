@@ -18,7 +18,7 @@ namespace SamuraiApp.UI
         {
             _context.Database.EnsureCreated();
             _context.GetService<ILoggerFactory>().AddProvider(new MyLoggerProvider());
-            FilteredEagerLoadViaProjectionNope();
+            ExplicitLoad();
             Console.ReadLine();
         }
 
@@ -172,6 +172,31 @@ namespace SamuraiApp.UI
                 .ToList();
             }
         }
+        #endregion
+
+        #region ExplicitLoad
+        private static void ExplicitLoad()
+        {
+            using (var context = new SamuraiContext())
+            {
+                var samurai = context.Samurais.FirstOrDefault();
+                context.Entry(samurai).Collection(s => s.Quotes).Load();
+                context.Entry(samurai).Reference(s => s.SecretIdentity).Load();
+            }
+        }
+
+        private static void ExplicitLoadWithChildFilter()
+        {
+            using (var context = new SamuraiContext())
+            {
+                var samurai = context.Samurais.FirstOrDefault();
+                context.Entry(samurai).Collection(s => s.Quotes)
+                    .Query()
+                    .Where(q => q.Text.Contains("nope"))
+                    .Load();
+            }
+        }
+
         #endregion
     }
 }
