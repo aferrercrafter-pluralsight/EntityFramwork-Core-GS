@@ -18,7 +18,7 @@ namespace SamuraiApp.UI
         {
             _context.Database.EnsureCreated();
             _context.GetService<ILoggerFactory>().AddProvider(new MyLoggerProvider());
-            ExplicitLoad();
+            UsingRealtedDataForFiltersAndMore();
             Console.ReadLine();
         }
 
@@ -184,7 +184,6 @@ namespace SamuraiApp.UI
                 context.Entry(samurai).Reference(s => s.SecretIdentity).Load();
             }
         }
-
         private static void ExplicitLoadWithChildFilter()
         {
             using (var context = new SamuraiContext())
@@ -196,7 +195,16 @@ namespace SamuraiApp.UI
                     .Load();
             }
         }
+        #endregion
 
+        #region RelatedDataForFiltersAndMore
+        private static void UsingRealtedDataForFiltersAndMore()
+        {
+            using (var context = new SamuraiContext())
+            {
+                var samurais = context.Samurais.Where(s => s.Quotes.Any(q => q.Text.Contains("happy"))).ToList();
+            }
+        }
         #endregion
     }
 }
