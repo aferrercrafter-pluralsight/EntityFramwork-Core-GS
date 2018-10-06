@@ -10,5 +10,9 @@ namespace SamuraiApp.Domain
         public List<Quote> Quotes { get; set; }
         public List<SamuraiBattle> SamuraiBattles {get;set;}
 
+        public Samurai()
+        {
+            Quotes = new List<Quote>(); 
+        }
     }
 }
