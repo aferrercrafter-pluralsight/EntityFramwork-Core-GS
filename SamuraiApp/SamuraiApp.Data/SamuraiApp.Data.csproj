@@ -133,6 +133,10 @@
     <Compile Include="Migrations\20180925024252_AddStoresProc.designer.cs">
       <DependentUpon>20180925024252_AddStoresProc.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20181007234502_ShadowState.cs" />
+    <Compile Include="Migrations\20181007234502_ShadowState.designer.cs">
+      <DependentUpon>20181007234502_ShadowState.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\SamuraiContextModelSnapshot.cs" />
     <Compile Include="MyLoggerProvider.cs" />
     <Compile Include="SamuraiContext.cs" />
