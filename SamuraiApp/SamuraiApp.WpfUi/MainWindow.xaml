@@ -63,5 +63,9 @@
                      Text="{Binding SecretIdentity.RealName, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
                      VerticalAlignment="Center" Width="340" TextChanged="RealName_TextChanged" />
         </Grid>
+        <Image x:Name="image" Source="Assets/blue samurai.png" Margin="645,158,10,282"/>
+        <Button x:Name="battles_button" HorizontalAlignment="Left" Margin="645,260,0,0" VerticalAlignment="Top" Width="84" Height="82" ToolTip="Battles" Click="gotoBattles_Click" Background="{x:Null}">
+            <Image x:Name="image1" Height="82" Width="84" Source="Assets/Explosion_Orange.png"/>
+        </Button>
     </Grid>
 </Window>

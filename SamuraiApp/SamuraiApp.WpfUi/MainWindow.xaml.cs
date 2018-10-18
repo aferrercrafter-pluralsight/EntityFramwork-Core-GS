@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using SamuraiApp.Data;
 using SamuraiApp.Domain;
+using SamuraiWpf;
 
 namespace SamuraiApp.WpfUi
 {
@@ -43,7 +44,7 @@ namespace SamuraiApp.WpfUi
 
         public void SaveChanges()
         {
-            _repo.SaveChanges();
+            _repo.SaveChanges(_currentSamurai.GetType());
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -89,6 +90,13 @@ namespace SamuraiApp.WpfUi
             {
                 _currentSamurai.IsDirty = true;
             }
+        }
+
+        private void gotoBattles_Click(object sender, RoutedEventArgs e)
+        {
+            var battlesWindow = new BattlesWindow(); //create your new form.
+            battlesWindow.Show(); //show the new form.
+            Close(); //only if you want to close the current form.
         }
     }
 }
