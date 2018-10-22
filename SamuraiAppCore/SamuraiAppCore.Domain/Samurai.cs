@@ -2,7 +2,7 @@
 
 namespace SamuraiAppCore.Domain
 {
-    public class Samurai
+    public class Samurai : ClientChangeTracker
     {
         public int Id { get; set; }
         public string Name { get; set; }

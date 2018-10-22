@@ -20,6 +20,11 @@ namespace SamuraiAppCore.Data
         {
             modelBuilder.Entity<SamuraiBattle>().HasKey(sb => new { sb.BattleId, sb.SamuraiId });
             //modelBuilder.Entity<Samurai>().Property(s => s.SecretIdentity).IsRequired();
+
+            foreach(var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                modelBuilder.Entity(entityType.Name).Ignore("IsDirty");
+            }
         }
     }
 }

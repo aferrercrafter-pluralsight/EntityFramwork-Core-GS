@@ -2,7 +2,7 @@
 
 namespace SamuraiAppCore.Domain
 {
-    public class Quote
+    public class Quote : ClientChangeTracker
     {
         public int Id { get; set; }
 
