@@ -10,14 +10,14 @@ using SamuraiAppCore.Data;
 namespace SamuraiAppCore.Data.Migrations
 {
     [DbContext(typeof(SamuraiContext))]
-    [Migration("20180918033726_JoinTable")]
-    partial class JoinTable
+    [Migration("20181022215927_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -61,13 +61,9 @@ namespace SamuraiAppCore.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BattleId");
-
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BattleId");
 
                     b.ToTable("Samurais");
                 });
@@ -82,7 +78,25 @@ namespace SamuraiAppCore.Data.Migrations
 
                     b.HasIndex("SamuraiId");
 
-                    b.ToTable("SamuraiBattle");
+                    b.ToTable("SamuraiBattles");
+                });
+
+            modelBuilder.Entity("SamuraiAppCore.Domain.SecretIdentity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("RealName");
+
+                    b.Property<int>("SamuraiId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SamuraiId")
+                        .IsUnique();
+
+                    b.ToTable("SecretIdentities");
                 });
 
             modelBuilder.Entity("SamuraiAppCore.Domain.Quote", b =>
@@ -93,24 +107,24 @@ namespace SamuraiAppCore.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SamuraiAppCore.Domain.Samurai", b =>
-                {
-                    b.HasOne("SamuraiAppCore.Domain.Battle")
-                        .WithMany("Samurais")
-                        .HasForeignKey("BattleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("SamuraiAppCore.Domain.SamuraiBattle", b =>
                 {
                     b.HasOne("SamuraiAppCore.Domain.Battle", "Battle")
-                        .WithMany()
+                        .WithMany("SamuraisBattles")
                         .HasForeignKey("BattleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("SamuraiAppCore.Domain.Samurai", "Samurai")
-                        .WithMany()
+                        .WithMany("SamuraiBattles")
                         .HasForeignKey("SamuraiId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SamuraiAppCore.Domain.SecretIdentity", b =>
+                {
+                    b.HasOne("SamuraiAppCore.Domain.Samurai", "Samurai")
+                        .WithOne("SecretIdentity")
+                        .HasForeignKey("SamuraiAppCore.Domain.SecretIdentity", "SamuraiId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
