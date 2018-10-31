@@ -44,3 +44,14 @@ DbContext.ChangeTracker.TrackGraph(graph, e => e.State = EntityState.Attach);
 //...
 ```
 
+__Change Tracker temprary Id__
+
+```c#
+//...
+var samurai = new Samurai() // Id = 0
+//...
+context.Samurai.Add(samurai) // Id = Int.Min +1 -2147482647
+//
+context.SaveChanges() // Id = (Db logic)
+```
+

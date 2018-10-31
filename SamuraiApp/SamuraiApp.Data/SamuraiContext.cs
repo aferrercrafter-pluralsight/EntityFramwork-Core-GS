@@ -27,9 +27,10 @@ namespace SamuraiApp.Data
         }
         protected override void OnConfiguring (DbContextOptionsBuilder optionsBuilder)
         {
-            string connection = "Data Source = (localdb)\\MSSQLLocalDB; Database = SamuraiWPFData1; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = True; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
-            optionsBuilder.UseSqlServer(connection);
-            optionsBuilder.EnableSensitiveDataLogging();            
+            //string connection = "Data Source = (localdb)\\MSSQLLocalDB; Database = SamuraiWPFData1; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = True; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
+            //optionsBuilder.UseSqlServer(connection);
+            //optionsBuilder.EnableSensitiveDataLogging();  
+            optionsBuilder.UseInMemoryDatabase();
         }
         public override int SaveChanges()
         {
