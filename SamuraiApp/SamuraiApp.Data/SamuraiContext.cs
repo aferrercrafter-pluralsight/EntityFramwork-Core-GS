@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SamuraiApp.Domain;
 using System;
+using System.Configuration;
 using System.Linq;
 
 namespace SamuraiApp.Data
@@ -13,6 +14,9 @@ namespace SamuraiApp.Data
         public DbSet<Battle> Battles { get; set; }
         public DbSet<SamuraiBattle> SamuraiBattles { get; set; }
 
+        public SamuraiContext(DbContextOptions options)
+            : base(options) { }
+        public SamuraiContext() { }
         protected override void OnModelCreating (ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<SamuraiBattle>().HasKey(x => new { x.SamuraiId, x.BattleId });
@@ -27,10 +31,14 @@ namespace SamuraiApp.Data
         }
         protected override void OnConfiguring (DbContextOptionsBuilder optionsBuilder)
         {
-            //string connection = "Data Source = (localdb)\\MSSQLLocalDB; Database = SamuraiWPFData1; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = True; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
-            //optionsBuilder.UseSqlServer(connection);
-            //optionsBuilder.EnableSensitiveDataLogging();  
-            optionsBuilder.UseInMemoryDatabase();
+            if (!optionsBuilder.IsConfigured)
+            {
+                var settings = ConfigurationManager.ConnectionStrings;
+                var connectionString = settings["productionDb"].ConnectionString;
+                optionsBuilder.UseSqlServer(connectionString,
+                    options => options.MaxBatchSize(30));
+                optionsBuilder.EnableSensitiveDataLogging();
+            }
         }
         public override int SaveChanges()
         {
