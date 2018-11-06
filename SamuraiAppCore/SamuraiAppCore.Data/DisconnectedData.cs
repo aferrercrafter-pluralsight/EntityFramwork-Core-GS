@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SamuraiAppCore.Domain;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SamuraiAppCore.Data
 {
@@ -15,7 +13,7 @@ namespace SamuraiAppCore.Data
         public DisconnectedData (SamuraiContext context)
         {
             _context = context;
-            _context.ChangeTracker.QueryTrackingBehavior = Microsoft.EntityFrameworkCore.QueryTrackingBehavior.NoTracking;
+            _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         //For Dropdown List, More efficent across the web
